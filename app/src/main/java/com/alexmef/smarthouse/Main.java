@@ -57,7 +57,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.imageButton_light:
                 changeLightState();
-                //TODO Implement function change light state
+                // TODO: 5/29/18 implement function changeLightState 
                 break;
             case R.id.imageButton_heating:
                 break;
