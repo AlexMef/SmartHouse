@@ -60,9 +60,6 @@ public class Settings extends AppCompatActivity implements OnClickListener {
             switch (v.getId()) {
                 case R.id.buttonConnect:
                     changeConnectionState();
-
-
-
                     // TODO: 24.05.2018 Реализовать подключение к серверу (подключение/отключение)
                     break;
                 case R.id.buttonGraphs:
@@ -74,7 +71,7 @@ public class Settings extends AppCompatActivity implements OnClickListener {
             }
         }
 
-        private void saveConnectionState(){
+        private void saveConnectionState()  {
             sharedPreferences = getPreferences(MODE_PRIVATE);
             SharedPreferences.Editor ed = sharedPreferences.edit();
             ed.putBoolean(CONNECTION_STATE, connectionState);
@@ -83,7 +80,7 @@ public class Settings extends AppCompatActivity implements OnClickListener {
             Toast.makeText(this, "Connection state saved", Toast.LENGTH_SHORT).show();
         }
 
-        private void loadConnectionState() {
+        private void loadConnectionState()  {
             sharedPreferences = getPreferences(MODE_PRIVATE);
             ipAdressState = sharedPreferences.getString(IP_ADRESS_STATE, ipAdressState);
             editIP.setText(ipAdressState);
@@ -117,10 +114,10 @@ public class Settings extends AppCompatActivity implements OnClickListener {
             }
         }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        saveConnectionState();
-    }
+        @Override
+        protected void onStop() {
+            super.onStop();
+            saveConnectionState();
+        }
 }
 

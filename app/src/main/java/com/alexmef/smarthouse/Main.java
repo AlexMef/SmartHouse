@@ -4,26 +4,34 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import static android.content.SharedPreferences.*;
 
 public class Main extends AppCompatActivity implements View.OnClickListener {
 
-    boolean bootLight = false;
+    //private static final String TAG = "";
     ImageButton light;
     ImageButton heating;
     ImageButton cooling;
     ImageButton settings;
 
-    SharedPreferences sPref;
 
-    String LIGHT_STATE = "LIGHT_STATE";
+    boolean lightState;
 
 
+    private DatabaseReference mDatabase;
 
 
     @Override
@@ -43,12 +51,15 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         cooling.setOnClickListener(this);
         settings.setOnClickListener(this);
 
+        // Getting reference to database and adding listener
+        //mDatabase.addListenerForSingleValueEvent(singleEventListener);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         loadLightState();
     }
 
 
     public static void main(String[] args) {
-
 
     }
 
@@ -57,7 +68,7 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.imageButton_light:
                 changeLightState();
-                // TODO: 5/29/18 implement function changeLightState 
+                // TODO: 5/29/18 implement function changeLightState
                 break;
             case R.id.imageButton_heating:
                 break;
@@ -76,37 +87,57 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
 
     private void saveLightState() {
-        sPref = getPreferences(MODE_PRIVATE);
-        Editor ed = sPref.edit();
-        ed.putBoolean(LIGHT_STATE, bootLight);
-        ed.apply();
-        Toast.makeText(this, "Light state saved", Toast.LENGTH_SHORT).show();
+
+
+        mDatabase.child("lightState").setValue(lightState);
+        //Toast.makeText(this, "Light state saved", Toast.LENGTH_SHORT).show();
     }
 
     private void loadLightState() {
-        sPref = getPreferences(MODE_PRIVATE);
-        Boolean savedLightState = sPref.getBoolean(LIGHT_STATE, bootLight);
-        bootLight = savedLightState;
+        // TODO: 6/3/18 fix bug with loading false state and turning false after returning from settings activity
 
-        if (!bootLight){
-            light.setImageResource(R.drawable.light_bulb_off);
-        } else if (bootLight) {
-            light.setImageResource(R.drawable.light_bulb_on);
-        }
+
+        mDatabase.child("lightState").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Boolean value = dataSnapshot.getValue(Boolean.class);
+                    lightState = value;
+                    Toast.makeText(Main.this, "Value assigned" + value + " " + lightState, Toast.LENGTH_SHORT).show();
+                    //Log.w("TAG", "Light state =" + lightState);
+
+                    if (lightState) {
+                        light.setImageResource(R.drawable.light_bulb_on);
+                        Toast.makeText(Main.this, "Light set on", Toast.LENGTH_SHORT).show();
+                    } else {
+                        light.setImageResource(R.drawable.light_bulb_off);
+                        Toast.makeText(Main.this, "Light set off", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
         Toast.makeText(this, "Light state loaded", Toast.LENGTH_SHORT).show();
     }
 
     private void changeLightState() {
-        if (!bootLight){
-            light.setImageResource(R.drawable.light_bulb_on);
-            Toast.makeText(this, "Light was off, now is on", Toast.LENGTH_SHORT).show();
-            bootLight = true;
-        } else if (bootLight) {
+        if (lightState){
             light.setImageResource(R.drawable.light_bulb_off);
             Toast.makeText(this, "Light was on, now is off", Toast.LENGTH_SHORT).show();
-            bootLight = false;
+            lightState = false;
+        } else if (!lightState) {
+            light.setImageResource(R.drawable.light_bulb_on);
+            Toast.makeText(this, "Light was off, now is on", Toast.LENGTH_SHORT).show();
+            lightState = true;
         }
+        mDatabase.child("lightState").setValue(lightState);
     }
+
 
     @Override
     protected void onStop() {
@@ -114,4 +145,10 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
         saveLightState();
     }
 
+
+
 }
+
+
+
+

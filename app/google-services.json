@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "396130233127",
+    "firebase_url": "https://smarthouse-49146.firebaseio.com",
+    "project_id": "smarthouse-49146",
+    "storage_bucket": "smarthouse-49146.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:396130233127:android:22c8131d8dcf71fd",
+        "android_client_info": {
+          "package_name": "com.alexmef.smarthouse"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "396130233127-55srip5ikjvcv2j78u2skkjd40ldt2hh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alexmef.smarthouse",
+            "certificate_hash": "c1e381662b33ed55f08ec3e7632655c8f92061f1"
+          }
+        },
+        {
+          "client_id": "396130233127-6o1ul2dgktj7jls5ke8rv22gmg79bdjc.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "396130233127-6o1ul2dgktj7jls5ke8rv22gmg79bdjc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWEfKWWi_fdTL5_jpKEzL8W_X8OigbzcU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "396130233127-6o1ul2dgktj7jls5ke8rv22gmg79bdjc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
